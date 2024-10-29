@@ -87,20 +87,21 @@ public class UserTests extends Reports {
     {
 
         setTCDesc("Test to Update User by ID");
-      //update data using payload
-        userPayload.setId(faker.idNumber().hashCode());
+        int existingUserId = 10;  // Use an ID you know exists in your test setup
+        userPayload.setId(existingUserId);
 
-        Response response =UserAEndpoints.UpdateUser(this.userPayload.getId(),userPayload);
+        // Update user data using payload
+        Response response = UserAEndpoints.UpdateUser(existingUserId, userPayload);
         response.then().log().all();
-        Assert.assertEquals(response.getStatusCode(),201);
-        int createdId = response.jsonPath().getInt("id");
-        userPayload.setId(createdId); // Set the correct ID for subsequent tests
 
-        //checking data after update
+        // Validate update response status code
+        Assert.assertEquals(response.getStatusCode(), 200);
+
+        // Checking data after update
         int idToRead = userPayload.getId();
-        Response responseAfterupdate =  UserAEndpoints.ReadUser(idToRead);
-        response.then().log().all();
-        Assert.assertEquals(responseAfterupdate.getStatusCode(),20);
+        Response responseAfterUpdate = UserAEndpoints.ReadUser(idToRead);
+        responseAfterUpdate.then().log().all();
+        Assert.assertEquals(responseAfterUpdate.getStatusCode(), 200);
 
 
     }

@@ -64,21 +64,11 @@ public class UserTests extends Reports {
        userPayload.setId(createdId); // Set the correct ID for subsequent tests
 
    }
+
     @Test(priority = 2)
     public void testGetUserById()
     {
-     /*   int idToRead = userPayload.getId();
-        System.out.println("Fetching user with ID: " + idToRead);
 
-        Response response =  UserAEndpoints.ReadUser(idToRead);
-        response.then().log().all();
-        if (response.getStatusCode() == 404) {
-            System.out.println("User with ID " + idToRead + " does not exist.");
-        }else {
-            Assert.assertEquals(response.getStatusCode(), 200);
-        }
-
-      */
         setTCDesc("Test to Get User by ID");
         int idToRead = 7;
         System.out.println("Fetching user with ID: " + idToRead);
@@ -133,5 +123,8 @@ public void testDeleteUserById()
         Response response =UserAEndpoints.DeleteUser(userIdToDelete);
         Assert.assertEquals(response.getStatusCode(),200);
     }
+
+
+
     }
 

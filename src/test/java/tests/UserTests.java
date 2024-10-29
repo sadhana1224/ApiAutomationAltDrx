@@ -5,6 +5,7 @@ import io.restassured.response.Response; // Use RestAssured's Response
 import endpoints.UserAEndpoints;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import payload.User;
 import io.restassured.RestAssured;
@@ -15,7 +16,16 @@ import static utilities.Reports.setTCDesc;
 public class UserTests extends Reports {
     Faker faker;
     User userPayload;
-
+    @DataProvider(name = "userData")
+    public Object[][] userData() {
+        return new Object[][] {
+                { 254,900,"Sadhana","test bodyy test test"},
+                { 255,901,"Subashini","test bodyy test Automation test"},
+                {289,903,"Logesh","Header body footer" }
+                // Add more test data as needed
+        };
+    }
+    /*
 @BeforeClass //i will pass the value to pojo class
     public void setupData()
     {
@@ -27,7 +37,7 @@ public class UserTests extends Reports {
         userPayload.setId(faker.idNumber().hashCode());
         userPayload.setTitle(faker.name().name());
         userPayload.setBody(faker.lorem().sentence());
-    }
+    } */
     @Test
     public void testGetPosts() {
         setTCDesc("Verify the URL");
@@ -38,10 +48,15 @@ public class UserTests extends Reports {
     }
 
     //post requestes TCs
-    @Test(priority = 1)
-   public void testPostUser()
+    @Test(dataProvider = "userData",priority = 1)
+   public void testPostUser(int userId,int id, String title, String body)
    {
        setTCDesc("Test to Post a New User");
+       User userPayload = new User();
+       userPayload.setUserId(userId);
+       userPayload.setId(id);
+       userPayload.setTitle(title);
+       userPayload.setBody(body);
      Response response =UserAEndpoints.createUser(userPayload);
      response.then().log().all();
      Assert.assertEquals(response.getStatusCode(),201);
@@ -86,9 +101,14 @@ public class UserTests extends Reports {
         public void testUpdateUserById()
     {
 
+        userPayload =new User();
         setTCDesc("Test to Update User by ID");
         int existingUserId = 10;  // Use an ID you know exists in your test setup
+       // userPayload.setId(existingUserId);
+        userPayload.setUserId(2265);
         userPayload.setId(existingUserId);
+        userPayload.setTitle("updated.email@example.com");
+        userPayload.setBody("This is an updated body for testing.");
 
         // Update user data using payload
         Response response = UserAEndpoints.UpdateUser(existingUserId, userPayload);

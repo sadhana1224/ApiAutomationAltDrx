@@ -46,7 +46,7 @@ public class UserAEndpoints {
                 .pathParam("id",Id)
                 .body(payload)
                 .when()
-                .put(Routes.update_url);
+                .patch(Routes.update_url);
         return response;
 
 
